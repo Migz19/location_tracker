@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:location_tracker/ui/maps_screen.dart';
 import 'package:location_tracker/ui/splash_screen.dart';
 
 class AppRoot extends StatelessWidget{
@@ -10,7 +11,7 @@ class AppRoot extends StatelessWidget{
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: MapsScreen(),
       theme: ThemeData(useMaterial3: false),
 
     );
