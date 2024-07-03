@@ -8,6 +8,9 @@ import 'package:location_tracker/domain/helpers/location_helpers.dart';
 import 'package:location_tracker/ui/widgets/custom_drawer.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
+import '../data/local/model/location/place.dart';
+import '../data/remote/search_helper.dart';
+
 class MapsScreen extends StatefulWidget {
   const MapsScreen({super.key});
 
@@ -71,34 +74,32 @@ class _MapsScreenState extends State<MapsScreen> {
         controller: searchBarController,
         elevation: 6,
         hint: "Search",
-        hintStyle: TextStyle(color: Colors.red, fontSize: 15),
-        queryStyle: TextStyle(fontSize: 18),
-        border: BorderSide(style: BorderStyle.none),
-        margins: EdgeInsets.fromLTRB(20, 70, 20, 0),
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+        hintStyle: const TextStyle(color: Colors.red, fontSize: 15),
+        queryStyle: const TextStyle(fontSize: 18),
+        border: const BorderSide(style: BorderStyle.none),
+        margins: const EdgeInsets.fromLTRB(20, 70, 20, 0),
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
         iconColor: Colors.red,
-        scrollPadding: EdgeInsets.only(top: 16, bottom: 50),
-        transitionDuration: Duration(milliseconds: 300),
+        scrollPadding: const EdgeInsets.only(top: 16, bottom: 50),
+        transitionDuration: const Duration(milliseconds: 300),
         transitionCurve: Curves.easeInOut,
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         axisAlignment: isPortraitMode ? 0 : -1,
         width: isPortraitMode ? 600 : 500,
-        debounceDelay: Duration(milliseconds: 500),
-        onQueryChanged: (query) {
-          //when typing starts
-        },
+        debounceDelay: const Duration(milliseconds: 500),
+        onQueryChanged:(query) =>_searchWord(query),
         onFocusChanged: (_) {},
         transition: CircularFloatingSearchBarTransition(),
         actions: [
           FloatingSearchBarAction(
               showIfOpened: false,
               child:
-                  CircularButton(icon: Icon(Icons.search), onPressed: () {})),
+                  CircularButton(icon: const Icon(Icons.search), onPressed: () {})),
         ],
         builder: (context, transition) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(0),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [],
@@ -156,5 +157,25 @@ class _MapsScreenState extends State<MapsScreen> {
 //   } else {
 //     throw 'Could not launch $url';
 //   }
-// }
+// }\
+
+
+  List<Place> _searchResults = [];
+
+
+  void _searchWord(String word) async {
+    try {
+
+      final searchHelper = SearchHelper();
+      final result = await searchHelper.searchHereMaps(word);
+      setState(() {
+        _searchResults = result;
+      });
+    } catch (e) {
+      print('Error searching word: $e');
+      setState(() {
+        _searchResults = [];
+      });
+    }
+  }
 }

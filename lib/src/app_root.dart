@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:location_tracker/ui/home_screen.dart';
 import 'package:location_tracker/ui/maps_screen.dart';
 import 'package:location_tracker/ui/splash_screen.dart';
 
